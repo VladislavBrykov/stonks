@@ -527,19 +527,9 @@ export class ScalpingService {
         startPrice,
       );
 
-      if (profit) {
+      if (profit && stonks.length != 8) {
         stonks.push(profit);
       }
-
-      // stonks.push(
-      //   await this.searchAllProfit(
-      //     typeProfit,
-      //     stonks,
-      //     pairInfo,
-      //     firstWord,
-      //     startPrice,
-      //   ),
-      // );
     }
     console.log(
       '-----------------------------------------------------------------------',
