@@ -27,6 +27,10 @@ bot.help((ctx) => ctx.reply('Send me a sticker'));
 app.use(express.static('public'));
 app.use(express.static('files'));
 
+bot.hears('test', async (ctx) => {
+  ctx.telegram.sendMessage(process.env.CHAT_ID, generateMessageAboutMe());
+});
+
 bot.hears(botMessages.quickBets, async (ctx) => {
   cron.schedule('0 */9 * * *', async () => {
     //every 9 hour
