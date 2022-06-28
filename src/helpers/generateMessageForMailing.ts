@@ -5,7 +5,6 @@ export function generateMessageForMailing(forecast) {
   return (
     botMessages.introduction +
     botMessages.fiveMinuteLimit +
-    Profit.min +
     botMessages.return +
     forecast.toString() +
     botMessages.return +

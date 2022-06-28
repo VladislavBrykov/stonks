@@ -105,9 +105,10 @@ bot.hears('test', async (ctx) => {
     );
   });
 
-  // cron.schedule('0 */3 * * *', async () => {
-  cron.schedule('0 0/5 * * *', async () => {
+  cron.schedule('*/5 * * * *', async () => {
+    // cron.schedule('0 0/1 * * *', async () => {
     //every 3 hour
+
     const result: any = await scalpingService.getPairScalpingInfo();
 
     await ctx.telegram.sendMessage(
@@ -127,8 +128,7 @@ bot.hears('test', async (ctx) => {
               resultProfitImages,
             );
           }
-          // }, 1000 * 60 * 60); //after 1 hour
-        }, 1000 * 60 * 8); //after 1 hour
+        }, 1000 * 60 * 4); //after 4 min
       }
 
       if (resultProfitImages.length != 0) {
@@ -137,7 +137,7 @@ bot.hears('test', async (ctx) => {
           resultProfitImages,
         );
       }
-    }, 1000 * 60 * 60); //after 1 hour
+    }, 1000 * 60 * 4); //after 4 min
   });
 });
 
