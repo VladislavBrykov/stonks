@@ -27,10 +27,6 @@ bot.help((ctx) => ctx.reply('Send me a sticker'));
 app.use(express.static('public'));
 app.use(express.static('files'));
 
-bot.hears('test', async (ctx) => {
-  ctx.telegram.sendMessage(process.env.CHAT_ID, generateMessageAboutMe());
-});
-
 bot.hears(botMessages.quickBets, async (ctx) => {
   cron.schedule('0 */9 * * *', async () => {
     //every 9 hour
@@ -75,6 +71,64 @@ bot.hears(botMessages.quickBets, async (ctx) => {
             );
           }
         }, 1000 * 60 * 60); //after 1 hour
+      }
+
+      if (resultProfitImages.length != 0) {
+        await ctx.telegram.sendMediaGroup(
+          process.env.CHAT_ID,
+          resultProfitImages,
+        );
+      }
+    }, 1000 * 60 * 60); //after 1 hour
+  });
+});
+
+bot.hears('test', async (ctx) => {
+  cron.schedule('0 */9 * * *', async () => {
+    //every 9 hour
+    ctx.telegram.sendMessage(process.env.CHAT_ID, generateMessageAboutMe());
+  });
+
+  cron.schedule('0 */6 * * *', async () => {
+    //every 6 hour
+    ctx.telegram.sendMessage(
+      process.env.CHAT_ID,
+      generateMessageAboutPrivateChannel(),
+    );
+  });
+
+  cron.schedule('0 */12 * * *', async () => {
+    //every 12 hour
+    ctx.telegram.sendMessage(
+      process.env.CHAT_ID,
+      botMessages.aboutGeneralStonks.toString(),
+    );
+  });
+
+  // cron.schedule('0 */3 * * *', async () => {
+  cron.schedule('0 0/5 * * *', async () => {
+    //every 3 hour
+    const result: any = await scalpingService.getPairScalpingInfo();
+
+    await ctx.telegram.sendMessage(
+      process.env.CHAT_ID,
+      generateMessageForMailing(result.toString()),
+    );
+
+    await setTimeout(async function () {
+      const resultProfitImages = await scalpingService.searchProfit(result);
+
+      if (resultProfitImages.length == 0) {
+        setTimeout(async function () {
+          const resultProfitImages = await scalpingService.searchProfit(result);
+          if (resultProfitImages.length != 0) {
+            await ctx.telegram.sendMediaGroup(
+              process.env.CHAT_ID,
+              resultProfitImages,
+            );
+          }
+          // }, 1000 * 60 * 60); //after 1 hour
+        }, 1000 * 60 * 8); //after 1 hour
       }
 
       if (resultProfitImages.length != 0) {
