@@ -116,7 +116,7 @@ bot.hears('test', async (ctx) => {
       generateMessageForMailing(result.toString()),
     );
 
-    await setTimeout(async function () {
+    setTimeout(async function () {
       const resultProfitImages = await scalpingService.searchProfit(result);
 
       if (resultProfitImages.length == 0) {
@@ -127,7 +127,7 @@ bot.hears('test', async (ctx) => {
               process.env.CHAT_ID,
               resultProfitImages,
             );
-          }
+          } else return;
         }, 1000 * 60 * 4); //after 4 min
       }
 
