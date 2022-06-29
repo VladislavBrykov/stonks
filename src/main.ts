@@ -27,38 +27,16 @@ bot.help((ctx) => ctx.reply('Send me a sticker'));
 app.use(express.static('public'));
 app.use(express.static('files'));
 
-bot.hears(botMessages.quickBets, async (ctx) => {
-  cron.schedule('0 */9 * * *', async () => {
-    //every 9 hour
-    ctx.telegram.sendMessage(process.env.CHAT_ID, generateMessageAboutMe());
-  });
-
-  cron.schedule('0 */6 * * *', async () => {
-    //every 6 hour
-    ctx.telegram.sendMessage(
-      process.env.CHAT_ID,
-      generateMessageAboutPrivateChannel(),
-    );
-  });
-
-  cron.schedule('0 */12 * * *', async () => {
-    //every 12 hour
-    ctx.telegram.sendMessage(
-      process.env.CHAT_ID,
-      botMessages.aboutGeneralStonks.toString(),
-    );
-  });
-
-  cron.schedule('0 */3 * * *', async () => {
-    //every 3 hour
+bot.hears('vip', async (ctx) => {
+  cron.schedule('*/29 * * * *', async () => {
     const result: any = await scalpingService.getPairScalpingInfo();
 
     await ctx.telegram.sendMessage(
-      process.env.CHAT_ID,
+      process.env.CHAT_ID_VIP,
       generateMessageForMailing(result.toString()),
     );
 
-    await setTimeout(async function () {
+    setTimeout(async function () {
       const resultProfitImages = await scalpingService.searchProfit(result);
 
       if (resultProfitImages.length == 0) {
@@ -66,31 +44,29 @@ bot.hears(botMessages.quickBets, async (ctx) => {
           const resultProfitImages = await scalpingService.searchProfit(result);
           if (resultProfitImages.length != 0) {
             await ctx.telegram.sendMediaGroup(
-              process.env.CHAT_ID,
+              process.env.CHAT_ID_VIP,
               resultProfitImages,
             );
-          }
-        }, 1000 * 60 * 60); //after 1 hour
+          } else return;
+        }, 1000 * 60 * 20);
       }
 
       if (resultProfitImages.length != 0) {
         await ctx.telegram.sendMediaGroup(
-          process.env.CHAT_ID,
+          process.env.CHAT_ID_VIP,
           resultProfitImages,
         );
       }
-    }, 1000 * 60 * 60); //after 1 hour
+    }, 1000 * 60 * 20);
   });
 });
 
-bot.hears('test', async (ctx) => {
+bot.hears('Быстрые ставки', async (ctx) => {
   cron.schedule('0 */9 * * *', async () => {
-    //every 9 hour
     ctx.telegram.sendMessage(process.env.CHAT_ID, generateMessageAboutMe());
   });
 
   cron.schedule('0 */6 * * *', async () => {
-    //every 6 hour
     ctx.telegram.sendMessage(
       process.env.CHAT_ID,
       generateMessageAboutPrivateChannel(),
@@ -98,17 +74,13 @@ bot.hears('test', async (ctx) => {
   });
 
   cron.schedule('0 */12 * * *', async () => {
-    //every 12 hour
     ctx.telegram.sendMessage(
       process.env.CHAT_ID,
       botMessages.aboutGeneralStonks.toString(),
     );
   });
 
-  cron.schedule('*/5 * * * *', async () => {
-    // cron.schedule('0 0/1 * * *', async () => {
-    //every 3 hour
-
+  cron.schedule('0 */3 * * *', async () => {
     const result: any = await scalpingService.getPairScalpingInfo();
 
     await ctx.telegram.sendMessage(
@@ -124,11 +96,11 @@ bot.hears('test', async (ctx) => {
           const resultProfitImages = await scalpingService.searchProfit(result);
           if (resultProfitImages.length != 0) {
             await ctx.telegram.sendMediaGroup(
-              process.env.CHAT_ID,
+              process.env.CHAT_ID_VIP,
               resultProfitImages,
             );
           } else return;
-        }, 1000 * 60 * 4); //after 4 min
+        }, 1000 * 60 * 30);
       }
 
       if (resultProfitImages.length != 0) {
@@ -137,7 +109,7 @@ bot.hears('test', async (ctx) => {
           resultProfitImages,
         );
       }
-    }, 1000 * 60 * 4); //after 4 min
+    }, 1000 * 60 * 30);
   });
 });
 
