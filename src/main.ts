@@ -31,33 +31,46 @@ bot.hears('vip', async (ctx) => {
   cron.schedule('*/29 * * * *', async () => {
     const result: any = await scalpingService.getPairScalpingInfo();
 
-    await ctx.telegram.sendMessage(
-      process.env.CHAT_ID_VIP,
-      generateMessageForMailing(result.toString()),
-    );
+    if (result === false) {
+      await ctx.telegram.sendMessage(
+        process.env.CHAT_ID_VIP,
+        generateMessageForMailing(
+          'Торговых пар нет. Рынок не стабилен. Ожидаем.',
+        ),
+      );
+    }
 
-    setTimeout(async function () {
-      const resultProfitImages = await scalpingService.searchProfit(result);
+    if (result !== false) {
+      await ctx.telegram.sendMessage(
+        process.env.CHAT_ID_VIP,
+        generateMessageForMailing(result.toString()),
+      );
 
-      if (resultProfitImages.length == 0) {
-        setTimeout(async function () {
-          const resultProfitImages = await scalpingService.searchProfit(result);
-          if (resultProfitImages.length != 0) {
-            await ctx.telegram.sendMediaGroup(
-              process.env.CHAT_ID_VIP,
-              resultProfitImages,
+      setTimeout(async function () {
+        const resultProfitImages = await scalpingService.searchProfit(result);
+
+        if (resultProfitImages.length == 0) {
+          setTimeout(async function () {
+            const resultProfitImages = await scalpingService.searchProfit(
+              result,
             );
-          } else return;
-        }, 1000 * 60 * 20);
-      }
+            if (resultProfitImages.length != 0) {
+              await ctx.telegram.sendMediaGroup(
+                process.env.CHAT_ID_VIP,
+                resultProfitImages,
+              );
+            } else return;
+          }, 1000 * 60 * 20);
+        }
 
-      if (resultProfitImages.length != 0) {
-        await ctx.telegram.sendMediaGroup(
-          process.env.CHAT_ID_VIP,
-          resultProfitImages,
-        );
-      }
-    }, 1000 * 60 * 20);
+        if (resultProfitImages.length != 0) {
+          await ctx.telegram.sendMediaGroup(
+            process.env.CHAT_ID_VIP,
+            resultProfitImages,
+          );
+        }
+      }, 1000 * 60 * 20);
+    }
   });
 });
 
@@ -83,33 +96,46 @@ bot.hears('Быстрые ставки', async (ctx) => {
   cron.schedule('0 */3 * * *', async () => {
     const result: any = await scalpingService.getPairScalpingInfo();
 
-    await ctx.telegram.sendMessage(
-      process.env.CHAT_ID,
-      generateMessageForMailing(result.toString()),
-    );
+    if (result === false) {
+      await ctx.telegram.sendMessage(
+        process.env.CHAT_ID_VIP,
+        generateMessageForMailing(
+          'Торговых пар нет. Рынок не стабилен. Ожидаем.',
+        ),
+      );
+    }
 
-    setTimeout(async function () {
-      const resultProfitImages = await scalpingService.searchProfit(result);
+    if (result !== false) {
+      await ctx.telegram.sendMessage(
+        process.env.CHAT_ID,
+        generateMessageForMailing(result.toString()),
+      );
 
-      if (resultProfitImages.length == 0) {
-        setTimeout(async function () {
-          const resultProfitImages = await scalpingService.searchProfit(result);
-          if (resultProfitImages.length != 0) {
-            await ctx.telegram.sendMediaGroup(
-              process.env.CHAT_ID_VIP,
-              resultProfitImages,
+      setTimeout(async function () {
+        const resultProfitImages = await scalpingService.searchProfit(result);
+
+        if (resultProfitImages.length == 0) {
+          setTimeout(async function () {
+            const resultProfitImages = await scalpingService.searchProfit(
+              result,
             );
-          } else return;
-        }, 1000 * 60 * 30);
-      }
+            if (resultProfitImages.length != 0) {
+              await ctx.telegram.sendMediaGroup(
+                process.env.CHAT_ID_VIP,
+                resultProfitImages,
+              );
+            } else return;
+          }, 1000 * 60 * 30);
+        }
 
-      if (resultProfitImages.length != 0) {
-        await ctx.telegram.sendMediaGroup(
-          process.env.CHAT_ID,
-          resultProfitImages,
-        );
-      }
-    }, 1000 * 60 * 30);
+        if (resultProfitImages.length != 0) {
+          await ctx.telegram.sendMediaGroup(
+            process.env.CHAT_ID,
+            resultProfitImages,
+          );
+        }
+      }, 1000 * 60 * 30);
+    }
   });
 });
 

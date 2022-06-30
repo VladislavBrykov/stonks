@@ -31,7 +31,7 @@ export class ScalpingService {
     private binanceService: BinanceService,
   ) {}
 
-  async getPairScalpingInfo(): Promise<any[]> {
+  async getPairScalpingInfo(): Promise<any> {
     let stonks = [];
     const cryptoPairInfoBTCUSDT = await this.binanceService.getCryptoInfo(
       CryptoPair.BTCUSDT,
@@ -387,7 +387,7 @@ export class ScalpingService {
 
     if (stonks.length > 0) {
       return stonks;
-    } else return ['Торговых пар нет. Рынок не стабилен. Ожидаем.'];
+    } else return false;
   }
 
   async searchLongProfit(stonks, cryptoPair, namePair) {
