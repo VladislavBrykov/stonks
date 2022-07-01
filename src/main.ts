@@ -60,7 +60,7 @@ bot.hears('vip', async (ctx) => {
                 resultProfitImages,
               );
             } else return;
-          }, 1000 * 60 * 20);
+          }, 1000 * 60 * 180);
         }
 
         if (resultProfitImages.length != 0) {
@@ -69,7 +69,7 @@ bot.hears('vip', async (ctx) => {
             resultProfitImages,
           );
         }
-      }, 1000 * 60 * 20);
+      }, 1000 * 60 * 60);
     }
   });
 });
@@ -125,7 +125,7 @@ bot.hears('Быстрые ставки', async (ctx) => {
                 resultProfitImages,
               );
             } else return;
-          }, 1000 * 60 * 30);
+          }, 1000 * 60 * 180);
         }
 
         if (resultProfitImages.length != 0) {
@@ -134,7 +134,7 @@ bot.hears('Быстрые ставки', async (ctx) => {
             resultProfitImages,
           );
         }
-      }, 1000 * 60 * 30);
+      }, 1000 * 60 * 60);
     }
   });
 });

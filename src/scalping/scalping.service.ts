@@ -512,6 +512,7 @@ export class ScalpingService {
 
   async searchProfit(result) {
     let stonks = [];
+    const countPair = result.length;
     for (let pair in result) {
       const arr = result[pair].split(' ');
       const firstWord = arr[0].replace(/\n/g, '');
@@ -535,6 +536,7 @@ export class ScalpingService {
       '-----------------------------------------------------------------------',
       stonks,
     );
-    return stonks;
+    if (stonks.length / countPair < 0.5) return [];
+    else return stonks;
   }
 }
