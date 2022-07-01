@@ -246,7 +246,7 @@ export async function generateImageShort(
       ' Бессрочный</div>\n' +
       '    </div>\n' +
       '    <div class="css-io5jed"><div data-bn-type="text" class="css-cxlpc6">' +
-      +'+' +
+      '+' +
       percent +
       '%</div>\n' +
       '    </div>\n' +
